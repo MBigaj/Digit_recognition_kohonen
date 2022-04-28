@@ -17,3 +17,12 @@ class FC:
         self.weights -= learning_rate * weights_error
         self.bias -= learning_rate * output_error
         return input_error
+
+    # def store_data(self, name):
+    #     with open(f'data/weights_{name}.txt', 'w') as file:
+    #         for weight in self.weights:
+    #             file.write(np.array2string(weight))
+    #
+    # def load_data(self, name):
+    #     with open(f'data/weights_{name}.txt', 'r') as file:
+    #         self.weights = np.loadtxt(file)

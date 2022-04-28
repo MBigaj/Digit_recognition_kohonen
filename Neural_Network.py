@@ -7,6 +7,15 @@ from Activation_Funcs import softmax, mse, mse_deriv, sigmoid
 
 class Network:
     def __init__(self, learning_rate):
+        # NEEDED FOR LOADING DATA
+        # self.fcc_1 = FC(28**2, 100)
+        # self.fcc_2 = FC(100, 50)
+        # self.fcc_3 = FC(50, 10)
+        # self.fcc_1.load_data('1')
+        # self.fcc_2.load_data('2')
+        # self.fcc_3.load_data('3')
+
+        # NEEDED FOR TRAINING
         self.learning_rate = learning_rate
         self.fcc_1 = FC(28**2, 100)
         self.fcc_2 = FC(100, 50)
@@ -48,6 +57,10 @@ class Network:
 
             error /= data_size
             print(f'Epoch: {i+1}/{epochs} - Error: {error}')
+
+        # self.fcc_1.store_data('1')
+        # self.fcc_2.store_data('2')
+        # self.fcc_3.store_data('3')
 
     def predict(self, input):
         input = self.flatten(input)
