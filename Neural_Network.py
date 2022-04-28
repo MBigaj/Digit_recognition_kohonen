@@ -72,4 +72,4 @@ class Network:
             if value > maximum:
                 prediction = index
 
-        return prediction
+        return f'The number that you have drawn is the number - {prediction}'
