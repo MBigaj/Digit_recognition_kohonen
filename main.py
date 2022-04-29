@@ -7,7 +7,23 @@ from keras.utils import np_utils
 from Neural_Network import Network
 from tkinter import *
 import tkinter as tk
+import os
 import matplotlib.pyplot as plt
+
+# DRAWING AND IMAGE SAVING
+# -----------------------------------------------------------------------------------------
+def save_image():
+    drawn_image.save(f'data/digit.jpg')
+    root.destroy()
+
+
+def paint(event):
+    x1, y1 = (event.x - 1), (event.y - 1)
+    x2, y2 = (event.x + 1), (event.y + 1)
+    new_canvas.create_oval(x1, y1, x2, y2, fill='black', width=16)
+    draw.rounded_rectangle([x1, y1, x2, y2], fill='black', width=10)
+# -----------------------------------------------------------------------------------------
+
 
 def load_image(image_path):
     img = PIL.Image.open(image_path)
@@ -31,16 +47,6 @@ network.train(data[0:1000], templates[0:1000], 30)
 # -----------------------------------------------------------------------------------------
 
 
-def save_image():
-    drawn_image.save(f'data/digit.jpg')
-    root.destroy()
-
-def paint(event):
-    x1, y1 = (event.x - 1), (event.y - 1)
-    x2, y2 = (event.x + 1), (event.y + 1)
-    new_canvas.create_oval(x1, y1, x2, y2, fill='black', width=16)
-    draw.rounded_rectangle([x1, y1, x2, y2], fill='black', width=10)
-
 root = tk.Tk()
 new_canvas = tk.Canvas(root, bg='white', width=400, height=400)
 new_canvas.pack()
@@ -56,6 +62,8 @@ button.pack()
 
 root.mainloop()
 
-img = load_image('data/digit.jpg')
+img = load_image(f'data/digit.jpg')
 print()
 print(network.predict(img))
+
+os.system('pause')

@@ -63,13 +63,17 @@ class Network:
         # self.fcc_3.store_data('3')
 
     def predict(self, input):
+
         input = self.flatten(input)
         output = self.layers([input])
-        maximum = output[0][0][0]
         prediction = 0
 
-        for index, value in enumerate(output[0][0]):
+        parsed_output = output[0][0]
+        maximum = parsed_output[0]
+
+        for index, value in enumerate(parsed_output):
             if value > maximum:
+                maximum = value
                 prediction = index
 
-        return f'The number that you have drawn is the number - {prediction}'
+        return f'I think that the number you have drawn is the number - {prediction}'
