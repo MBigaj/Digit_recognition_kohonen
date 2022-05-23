@@ -1,6 +1,5 @@
 import numpy as np
 import os
-
 from FC_Layer import FC
 from Activation_Layer import Activation
 from Activation_Funcs import softmax, mse, mse_deriv, sigmoid
@@ -75,5 +74,7 @@ class Network:
             if value > maximum:
                 maximum = value
                 prediction = index
+
+        print(parsed_output)
 
         return f'I think that the number you have drawn is the number - {prediction}'
