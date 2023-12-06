@@ -1,27 +1,26 @@
 import numpy as np
 import os
-from FC_Layer import FC
-from Activation_Layer import Activation
-from Activation_Funcs import softmax, mse, mse_deriv, sigmoid
+from layers.Layers import Dense, Activation
+from auxilary.activation_functions import sigmoid, sigmoid_deriv, mse, mse_deriv
 
-class Network:
+class NeuralNetwork:
     def __init__(self, learning_rate):
         # NEEDED FOR LOADING DATA
-        # self.fcc_1 = FC(28**2, 100)
-        # self.fcc_2 = FC(100, 50)
-        # self.fcc_3 = FC(50, 10)
+        # self.fcc_1 = Dense(28**2, 100)
+        # self.fcc_2 = Dense(100, 50)
+        # self.fcc_3 = Dense(50, 10)
         # self.fcc_1.load_data('1')
         # self.fcc_2.load_data('2')
         # self.fcc_3.load_data('3')
 
         # NEEDED FOR TRAINING
         self.learning_rate = learning_rate
-        self.fcc_1 = FC(28**2, 100)
-        self.fcc_2 = FC(100, 50)
-        self.fcc_3 = FC(50, 10)
+        self.fcc_1 = Dense(28**2, 100)
+        self.fcc_2 = Dense(100, 50)
+        self.fcc_3 = Dense(50, 10)
         self.activate_1 = Activation()
         self.activate_2 = Activation()
-        self.activate_3 = Activation()
+        self.activate_3 = Activation(sigmoid, sigmoid_deriv)
 
     def flatten(self, input):
         return input.reshape(1, input.shape[0]**2)

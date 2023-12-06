@@ -1,8 +1,8 @@
 import os
-
 import numpy as np
+from auxilary.activation_functions import relu, relu_deriv, tanh, tanh_deriv
 
-class FC:
+class Dense:
     def __init__(self, input_size, output_size):
         self.weights = np.random.rand(input_size, output_size) - 0.5
         self.bias = np.random.rand(1, output_size) - 0.5
@@ -28,3 +28,15 @@ class FC:
     # def load_data(self, name):
     #     with open(f'data/weights_{name}.txt', 'r') as file:
     #         self.weights = np.loadtxt(file)
+
+class Activation:
+    def __init__(self, activation=tanh, activation_deriv=tanh_deriv):
+        self.activation = activation
+        self.activation_deriv = activation_deriv
+
+    def forward_prop(self, input):
+        self.input = input
+        return self.activation(input)
+
+    def backward_prop(self, output_error):
+        return self.activation_deriv(self.input) * output_error

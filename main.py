@@ -1,69 +1,50 @@
-from PIL import ImageOps, ImageDraw
+import os
+from PIL import ImageOps
 import PIL.Image
 import PIL
 import numpy as np
-from keras.datasets import mnist
-from keras.utils import np_utils
-from Neural_Network import Network
 from tkinter import *
-import tkinter as tk
-import os
 import matplotlib.pyplot as plt
+from keras.datasets import mnist
+from keras import utils
+from neural_network.NeuralNetwork import NeuralNetwork
+from CanvasManager import CanvasManager
 
-# DRAWING AND IMAGE SAVING
-# -----------------------------------------------------------------------------------------
-def save_image():
-    drawn_image.save(f'data/digit.jpg')
-    root.destroy()
+def main():
+    def load_image(image_path):
+        img = PIL.Image.open(image_path)
+        img = ImageOps.grayscale(img)
+        img = img.resize(size=(28, 28))
+        img = np.array(img)
+        img = img.astype(float)
+        img /= 255
+        return img
+
+    # DATA NEEDED FOR TRAINING PURPOSES
+    # -----------------------------------------------------------------------------------------
+    (x_train, y_train), (x_test, y_test) = mnist.load_data()
+    x_train = x_train.reshape(x_train.shape[0], 1, 28*28)
+    x_train = x_train.astype(float)
+    x_train /= 255
+    y_train = utils.to_categorical(y_train)
+
+    model = NeuralNetwork(0.2)
+    model.train(x_train[0:1000], y_train[0:1000], 20)
+    # -----------------------------------------------------------------------------------------
+
+    x = 0
+
+    while x < 10:
+        canvas_manager = CanvasManager()
+        canvas_manager.create_new_canvas()
+
+        img = load_image(f'x_train/digit.jpg')
+        print()
+        print(model.predict(img))
+
+        os.system('pause')
+        x += 1
 
 
-def paint(event):
-    x1, y1 = (event.x - 1), (event.y - 1)
-    x2, y2 = (event.x + 1), (event.y + 1)
-    new_canvas.create_oval(x1, y1, x2, y2, fill='black', width=16)
-    draw.rounded_rectangle([x1, y1, x2, y2], fill='black', width=10)
-# -----------------------------------------------------------------------------------------
-
-
-def load_image(image_path):
-    img = PIL.Image.open(image_path)
-    img = ImageOps.grayscale(img)
-    img = img.resize(size=(28, 28))
-    img = np.array(img)
-    img = img.astype(float)
-    img /= 255
-    return img
-
-# DATA NEEDED FOR TRAINING PURPOSES
-# -----------------------------------------------------------------------------------------
-(data, templates), (test_data, test_templates) = mnist.load_data()
-data = data.reshape(data.shape[0], 1, 28*28)
-data = data.astype(float)
-data /= 255
-templates = np_utils.to_categorical(templates)
-
-network = Network(0.2)
-network.train(data[0:1000], templates[0:1000], 30)
-# -----------------------------------------------------------------------------------------
-
-
-root = tk.Tk()
-new_canvas = tk.Canvas(root, bg='white', width=400, height=400)
-new_canvas.pack()
-
-drawn_image = PIL.Image.new('RGB', (400, 400), 'white')
-draw = ImageDraw.Draw(drawn_image)
-
-new_canvas.pack(fill='both', expand='yes')
-new_canvas.bind('<B1-Motion>', paint)
-
-button = Button(text='Predict', command=save_image)
-button.pack()
-
-root.mainloop()
-
-img = load_image(f'data/digit.jpg')
-print()
-print(network.predict(img))
-
-os.system('pause')
+if __name__ == '__main__':
+    main()
